@@ -37,7 +37,7 @@ root [2] test(2,3)
 2. [標準ライブラリ](notebooks/basic_cpp_002.ipynb)
 
 ## ROOTを使ったヒストグラム、グラフ作成例
-1. [ROOTを使ってみる](notebooks/basic_root_001.ipynb)
+1. [1次元ヒストグラムの作例](notebooks/basic_root_001.ipynb)
 2. [グラフの作例](notebooks/basic_root_002.ipynb)
 3. [エラーバー付きグラフの作例](notebooks/basic_root_003.ipynb)
 
