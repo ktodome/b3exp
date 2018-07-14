@@ -33,8 +33,12 @@ root [2] test(2,3)
 ``` 
 
 ## プログラミング言語C++についての簡単な説明
+1. [C++言語の基礎](notebooks/basic_cpp_001.ipynb)
+2. [標準ライブラリ](notebooks/basic_cpp_002.ipynb)
 
 ## ROOTを使ったヒストグラム、グラフ作成例
-
+1. [ROOTを使ってみる](notebooks/basic_root_001.ipynb)
+2. [グラフの作例](basic_root_002.ipynb)
+3. [エラーバー付きグラフの作例](basic_root_003.ipynb)
 
 
