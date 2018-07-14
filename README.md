@@ -38,7 +38,7 @@ root [2] test(2,3)
 
 ## ROOTを使ったヒストグラム、グラフ作成例
 1. [ROOTを使ってみる](notebooks/basic_root_001.ipynb)
-2. [グラフの作例](basic_root_002.ipynb)
-3. [エラーバー付きグラフの作例](basic_root_003.ipynb)
+2. [グラフの作例](notebooks/basic_root_002.ipynb)
+3. [エラーバー付きグラフの作例](notebooks/basic_root_003.ipynb)
 
 
