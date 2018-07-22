@@ -41,4 +41,5 @@ root [2] test(2,3)
 2. [グラフの作例](notebooks/basic_root_002.ipynb)
 3. [エラーバー付きグラフの作例](notebooks/basic_root_003.ipynb)
 4. [ラザフォード散乱の理論線作例](notebooks/basic_root_004.ipynb)
+5. [MCAデータからヒストグラムの作成例](notebooks/basic_root_005.ipynb)
 
