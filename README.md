@@ -43,3 +43,7 @@ root [2] test(2,3)
 4. [ラザフォード散乱の理論線作例](notebooks/basic_root_004.ipynb)
 5. [MCAデータからヒストグラムの作成例](notebooks/basic_root_005.ipynb)
 
+## マクロ集
+実際に端末上で使用することになるROOTマクロは[こちら](macros/README.md)
+
+
