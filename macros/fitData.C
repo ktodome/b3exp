@@ -53,6 +53,26 @@ Double_t doubleGaus(Double_t *x, Double_t *par){
   return par[0]*(par[4]*g1+(1-par[4])*g2);
 }
 
+
+double step(double x, double t){
+  return x < t? 0.0 :1.0;
+}
+
+Double_t asymGaus(Double_t *x, Double_t *par){
+  double sigma = 0.5*(par[2]+par[3]);
+  double g1 = (1.0-step(x[0],par[1])) * TMath::Gaus(x[0], par[1], par[2]);
+  double g2 = step(x[0],par[1]) * TMath::Gaus(x[0], par[1], par[3]);
+  return par[0]/(TMath::Sqrt(2.0*TMath::Pi())*sigma)*(g1+g2);
+}
+
+Double_t breitWigner(Double_t *x, Double_t *par){
+  return par[0]*TMath::BreitWigner(x[0],par[1],par[2]);
+}
+
+Double_t voigt(Double_t *x, Double_t *par){
+  return par[0]*TMath::Voigt(x[0]-par[1],par[2],par[3]);
+}
+
 void fitData(){
   gStyle->SetOptStat(0);
   setStyle();
@@ -71,6 +91,7 @@ void fitData(){
   double Y = sg->GetParameter(0)/binsPerChannel;
   double dY = sg->GetParError(0)/binsPerChannel;
   std::cout << Y << "+/-" << dY << std::endl;
+
   auto dg = new TF1("dg",doubleGaus,600,1000,5);
   dg->SetParameters(1000,770,15,50,0.8);
   hRebin->Fit("dg");
@@ -79,16 +100,49 @@ void fitData(){
   dY = dg->GetParError(0)/binsPerChannel;
   std::cout << Y << "+/-" << dY << std::endl;
 
+  auto ag = new TF1("ag",asymGaus,600,1000,4);
+  ag->SetParameters(1000,770,50,100);
+  hRebin->Fit("ag");
+
+  Y = ag->GetParameter(0)/binsPerChannel;
+  dY = ag->GetParError(0)/binsPerChannel;
+  std::cout << Y << "+/-" << dY << std::endl;
+
+  auto bw = new TF1("bw",breitWigner,600,1000,3);
+  bw->SetParameters(1000,770,50);
+  hRebin->Fit("bw");
+
+  Y = bw->GetParameter(0)/binsPerChannel;
+  dY = bw->GetParError(0)/binsPerChannel;
+  std::cout << Y << "+/-" << dY << std::endl;
+
+  auto vg = new TF1("vg",voigt,600,1000,4);
+  vg->SetParameters(1000,770,50,5);
+  hRebin->Fit("vg");
+
+  Y = vg->GetParameter(0)/binsPerChannel;
+  dY = vg->GetParError(0)/binsPerChannel;
+  std::cout << Y << "+/-" << dY << std::endl;
+
   hRebin->Draw();
   sg->SetLineColor(kBlue);
   sg->Draw("same");
   dg->SetLineColor(kMagenta);
   dg->Draw("same");
+  ag->SetLineColor(kGreen);
+  ag->Draw("same");
+  bw->SetLineColor(kCyan);
+  bw->Draw("same");
+  vg->SetLineColor(kYellow);
+  vg->Draw("same");
   auto leg = new TLegend(0.15,0.7,0.4,0.9,"","NDC");
   leg->SetBorderSize(0);
   leg->AddEntry(hRebin,"Data","lep");
   leg->AddEntry(sg,"Single gaussian","l");
   leg->AddEntry(dg,"Double gaussian","l");
+  leg->AddEntry(ag,"Asym. gaussian","l");
+  leg->AddEntry(bw,"Breit Wigner","l");
+  leg->AddEntry(vg,"Voigt","l");
   leg->Draw();
 }  
 
