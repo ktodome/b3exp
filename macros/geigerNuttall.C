@@ -2,13 +2,28 @@
 #include <TH2D.h>
 #include <TGraph.h>
 
+/**
+*
+* geigerNuttallのプロット
+*
+*/
+
+/**
+* プロットスタイルの設定関数.
+*/
 void setStyle();
 
+/**
+*  フィッティングで使用する線形関数の定義.
+*/
 double pol1(double *x, double *par)
 {
   return par[0]+par[1]*x[0];
 }
 
+/**
+* データを読み込むための関数.
+*/
 bool setData(std::string fname,
 	     std::vector<double>& t2,
 	     std::vector<double>& ez,
@@ -18,7 +33,7 @@ bool setData(std::string fname,
   if(ifs.is_open()) {
     while (true) {
       double t,ea,z,a;
-      ifs >> t >> ea >> z >> a; 
+      ifs >> t >> ea >> z >> a;
       if (ifs.eof()) break;
       t2.push_back(t);
       ez.push_back(std::pow(ea,-0.5)*z);
@@ -35,37 +50,45 @@ bool setData(std::string fname,
   }
 }
 
+/**
+* メイン関数.
+*/
 void geigerNuttall(){
   setStyle();
-  gStyle->SetOptStat(0); 
+  gStyle->SetOptStat(0);
   gStyle->SetOptFit(0);
 
+  //  グループ１のデータ読み込み
   std::string file1 = "group1.dat";
   std::vector<double> t2_g1 ={};
   std::vector<double> ez_g1 = {};
   std::vector<double> lnL_g1 ={};
   setData(file1,t2_g1,ez_g1,lnL_g1);
-  
+
+  // グラフ作成、フィット
   auto gr1 = new TGraph(ez_g1.size(), &ez_g1[0], &lnL_g1[0]);
   auto l1 = new TF1("l1",pol1,0,100,2);
   gr1->Fit("l1","0");
 
-
+  // グループ2のデータ読み込み
   std::string file2 = "group2.dat";
   std::vector<double> t2_g2 ={};
   std::vector<double> ez_g2 = {};
   std::vector<double> lnL_g2 ={};
   setData(file2,t2_g2,ez_g2,lnL_g2);
+  // グラフ作成、フィット
   auto gr2 = new TGraph(ez_g2.size(), &ez_g2[0], &lnL_g2[0]);
   auto l2 = new TF1("l2",pol1,0,100,2);
   l2->FixParameter(1,l1->GetParameter(1));
   gr2->Fit("l2","0");
 
+  // グループ3のデータ読み込み
   std::string file3 = "group3.dat";
   std::vector<double> t2_g3 ={};
   std::vector<double> ez_g3 = {};
   std::vector<double> lnL_g3 ={};
   setData(file3,t2_g3,ez_g3,lnL_g3);
+  // グラフ作成、フィット
   auto gr3 = new TGraph(ez_g3.size(), &ez_g3[0], &lnL_g3[0]);
   auto l3 = new TF1("l3",pol1,0,100,2);
   l3->FixParameter(1,l1->GetParameter(1));
@@ -76,6 +99,7 @@ void geigerNuttall(){
   auto h = new TH2D("h","Geiger-Nuttall relation;ZE^{-1/2};log#lambda",200,30,50,160,-80,20);
   h->Draw();
 
+  //　色つけたかっただけなのであまり気にしないで良いです。
   int ci[6] = {3000, 3001, 3002, 3003, 3004, 3005};
   TColor *col[6];
   float rgb[6][3] = {
@@ -97,6 +121,7 @@ void geigerNuttall(){
   gr2->SetMarkerColor(ci[4]);
   gr3->SetMarkerColor(ci[5]);
 
+  //　グラフの描画
   gr1->Draw("P");
   gr2->Draw("P");
   gr3->Draw("P");
@@ -104,6 +129,8 @@ void geigerNuttall(){
   for(int i=0;i<6;++i){
     col[i] = new TColor(ci[i],rgb[i][0],rgb[i][1],rgb[i][2]);
   }
+
+  //　フィットした直線の描画
   l1->SetLineColor(ci[0]);
   l2->SetLineColor(ci[1]);
   l3->SetLineColor(ci[2]);
@@ -111,6 +138,7 @@ void geigerNuttall(){
   l2->Draw("same");
   l3->Draw("same");
 
+  //　Legendの追加  
   auto leg = new TLegend(0.6,0.6,0.88,0.88,"","NDC");
   leg->SetBorderSize(0);
   leg->AddEntry(gr1, "group1 data", "p");
@@ -159,7 +187,7 @@ void setStyle(){
   gStyle->SetTitleFont(font,"y");
   gStyle->SetLabelFont(font,"z");
   gStyle->SetTitleFont(font,"z");
-  
+
   gStyle->SetLabelSize(tsize,"x");
 
   gStyle->SetTitleSize(tsize,"x");
@@ -175,7 +203,5 @@ void setStyle(){
   gStyle->SetMarkerStyle(20);
   gStyle->SetMarkerSize(1.0);
   gStyle->SetHistLineWidth(2.);
-  gStyle->SetLineStyleString(2,"[12 12]"); 
+  gStyle->SetLineStyleString(2,"[12 12]");
 }
-
-
