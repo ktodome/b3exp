@@ -1,10 +1,13 @@
 //
-// MCAの出力からヒストグラムを作成するスクリプト
+// 実験で使うとおもわれる操作を関数にしたもの
 //
 #include <string>
 #include <fstream>
 #include <TH1D.h>
 
+/**
+ * MCAのデータを読み込んでヒストグラムを作成する.
+ */
 TH1D* importHist(std::string fname)
 {
 
@@ -35,12 +38,56 @@ TH1D* importHist(std::string fname)
 }
 
 
-TH1D* rebin(TH1D *hist, int ndiv = 1, std::string title="")
+/**
+ * ヒストグラムのリビン.
+ */
+TH1D* rebin(TH1D *hist, int ndiv = 1, std::string title="hnew")
 {
-  // rebining
-  TH1D *hist_rebin = (TH1D *)hist->Rebin(ndiv,title.c_str());
+  // rebinin
+  TH1D *htmp = (TH1D*)hist->Clone(title.c_str());
+  TH1D *hist_rebin = dynamic_cast<TH1D *>(htmp->Rebin(ndiv));
   return hist_rebin;
 }
     
+
+/**
+ * ヒストグラムの指定した範囲の積分値を計算する.
+ */
+
+double integral(const TH1D* hist, double xmin=0, double xmax=100000){
+  std::map<int,double> x;
+  const int nbins = hist->GetNbinsX();
+  for(int i =0;i<nbins;++i){
+    x.insert(std::make_pair(i+1,hist->GetBinLowEdge(i+1)));
+  }
+
+  int binMin = 1;
+  int binMax = nbins;
+  for(const auto &xx : x){
+    if(xx.second > xmin){
+      binMin = xx.first-1;
+      break;
+    }
+  }
+
+  for(const auto &xx : x){
+  if(xx.second > xmax){
+      binMax = xx.first-1;
+      break;
+    }
+  }
+
   
-  
+  return (hist->Integral(binMin,binMax));
+}
+
+
+/**
+ * ピーク値に対応するXの値を返す.
+ */
+double peak(const TH1D* hist){
+  cout << "peak value " << hist->GetMaximum() << endl;
+  int binx = hist->GetMaximumBin();
+  double xpeak =  hist->GetBinCenter(binx);
+  return xpeak;
+}
