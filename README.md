@@ -69,7 +69,8 @@ root [2] test(2,3)
 4. [ラザフォード散乱の理論線作例](notebooks/basic_root_004.ipynb)
 5. [MCAデータからヒストグラムの作成](notebooks/basic_root_005.ipynb)  
 6. [MCAデータをフィッティング(シグナルのみの場合)](notebooks/basic_root_006.ipynb)
-7. [MCAデータをフィッティング(シグナルとバックグラウンドの場合)](notebooks/basic_root_007.ipynb)
+7. [MCAデータをフィッティング(シグナルとバックグラウンドの場合)](notebooks/basic_root_007.ipynb)  
+8. [Geiger-Nuttallのプロット](notebooks/basic_root_008.ipynb)
 
 ## マクロ集
 実際に端末上で使用することになるROOTマクロは[こちら](macros/README.md)
