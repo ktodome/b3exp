@@ -108,3 +108,76 @@ template <typename T>
 void ytitle(T* hist, TString str){
   hist->GetYaxis()->SetTitle(str);
 }
+
+
+/**
+* 半減期のデータを読み込むための関数.
+*/
+bool setData(std::string fname,
+	     std::vector<double>& t2,
+	     std::vector<double>& ez,
+	     std::vector<double>& lnL)
+{
+  ifstream ifs(fname.c_str());
+  if(ifs.is_open()) {
+    while (true) {
+      double t,ea,z,a;
+      ifs >> t >> ea >> z >> a;
+      if (ifs.eof()) break;
+      t2.push_back(t);
+      ez.push_back(std::pow(ea,-0.5)*z);
+      // std::cout << t << " " << ea << " " << z << " " << a << std::endl;
+    }
+    for(const auto& t : t2){
+      lnL.push_back(log(log(2.0)/t));
+    }
+    ifs.close();
+    return true;
+  } else {
+    std::cout << fname << " was not opend!" << std::endl;
+    return false;
+  }
+}
+
+
+/**
+ * 半減期のデータを読み込んでグラフを作成.
+ */
+TGraph * gnMakeGraph(std::string file="group1.dat")
+{
+  std::vector<double> t2_g1 ={};
+  std::vector<double> ez_g1 = {};
+  std::vector<double> lnL_g1 ={};
+  setData(file,t2_g1,ez_g1,lnL_g1);
+  // グラフ作成、フィット
+  TGraph* gr1 = new TGraph(ez_g1.size(), &ez_g1[0], &lnL_g1[0]);
+  gr1->SetMarkerStyle(kFullCircle);
+  return gr1;
+}
+
+/**
+*  フィッティングで使用する線形関数の定義.
+*/
+double pol1(double *x, double *par)
+{
+  return par[0]+par[1]*x[0];
+}
+
+/**
+ * line fit.
+ * no constant, slope.
+ */
+TF1* line(TString name){
+  TF1* line = new TF1(name,"pol1",0,100,2);
+  return line;
+}
+
+/**
+ * line fit.
+ * with slope
+ */
+TF1* line(TString name, double slope){
+  TF1* line = new TF1(name,"pol1",0,100,2);
+  line->FixParameter(1,slope);
+  return line;
+}
