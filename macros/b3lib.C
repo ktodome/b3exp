@@ -91,3 +91,5 @@ double peak(const TH1D* hist){
   double xpeak =  hist->GetBinCenter(binx);
   return xpeak;
 }
+
+
