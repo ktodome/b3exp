@@ -93,3 +93,18 @@ double peak(const TH1D* hist){
 }
 
 
+/**
+ * Xラベルのタイトルを設定.
+ */
+template <typename T>
+void xtitle(T* hist, TString str){
+  hist->GetXaxis()->SetTitle(str);
+}
+
+/**
+ * Yラベルのタイトルを設定.
+ */
+template <typename T>
+void ytitle(T* hist, TString str){
+  hist->GetYaxis()->SetTitle(str);
+}
