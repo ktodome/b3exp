@@ -181,3 +181,25 @@ TF1* line(TString name, double slope){
   line->FixParameter(1,slope);
   return line;
 }
+
+
+TGraph* ruMakeGraph(std::string fname){
+  // データコンテナを確保
+  std::vector<double> x={};  
+  std::vector<double> y={};
+
+  std::ifstream ifs(fname);
+  if(ifs.is_open()) {
+    while (true) {
+      double q,cs;
+      ifs >> q >> cs;
+      if (ifs.eof()) break;
+      x.push_back(q);
+      y.push_back(cs);
+    }
+    ifs.close();
+  }
+
+  TGraph* gr = new TGraph(x.size(), &x[0], &y[0]);
+  return gr;
+}
