@@ -68,7 +68,7 @@ root [2] test(2,3)
 
 ## ROOTを使ったヒストグラム、グラフ作成例
 1. [1次元ヒストグラムの作成](notebooks/basic_root_001.ipynb)  
-1.1 [スタイルの編集方法](notebooks/basic_root_009.)
+1.1 [スタイルの編集方法](notebooks/basic_root_009.md)
 2. [グラフの作成](notebooks/basic_root_002.ipynb)
 3. [エラーバー付きグラフの作成](notebooks/basic_root_003.ipynb)
 4. [ラザフォード散乱の理論線作例](notebooks/basic_root_004.ipynb)
