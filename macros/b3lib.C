@@ -203,3 +203,27 @@ TGraph* ruMakeGraph(std::string fname){
   TGraph* gr = new TGraph(x.size(), &x[0], &y[0]);
   return gr;
 }
+
+
+TGraphErrors* ruMakeGraphErrors(std::string fname){
+  std::vector<double> x={};  
+  std::vector<double> y={};
+  std::vector<double> dx={};  
+  std::vector<double> dy={};
+
+  std::ifstream ifs(fname);
+  if(ifs.is_open()) {
+    while (true) {
+      double q,cs, dq,dcs;
+      ifs >> q >> cs >> dq >> dcs;
+      if (ifs.eof()) break;
+      x.push_back(q);
+      y.push_back(cs);
+      dx.push_back(dq);
+      dy.push_back(dcs);
+    }
+    ifs.close();
+  }
+  TGraphErrors *gre = new TGraphErrors(x.size(),&x[0],&y[0],&dx[0],&dy[0]);
+  return gre;
+}
