@@ -48,7 +48,7 @@ TH1D* rebin(TH1D *hist, int ndiv = 1, std::string title="hnew")
   TH1D *hist_rebin = dynamic_cast<TH1D *>(htmp->Rebin(ndiv));
   return hist_rebin;
 }
-    
+
 
 /**
  * ヒストグラムの指定した範囲の積分値を計算する.
@@ -77,7 +77,7 @@ double integral(const TH1D* hist, double xmin=0, double xmax=100000){
     }
   }
 
-  
+
   return (hist->Integral(binMin,binMax));
 }
 
@@ -185,7 +185,7 @@ TF1* line(TString name, double slope){
 
 TGraph* ruMakeGraph(std::string fname){
   // データコンテナを確保
-  std::vector<double> x={};  
+  std::vector<double> x={};
   std::vector<double> y={};
 
   std::ifstream ifs(fname);
@@ -206,9 +206,9 @@ TGraph* ruMakeGraph(std::string fname){
 
 
 TGraphErrors* ruMakeGraphErrors(std::string fname){
-  std::vector<double> x={};  
+  std::vector<double> x={};
   std::vector<double> y={};
-  std::vector<double> dx={};  
+  std::vector<double> dx={};
   std::vector<double> dy={};
 
   std::ifstream ifs(fname);
@@ -229,11 +229,11 @@ TGraphErrors* ruMakeGraphErrors(std::string fname){
 }
 
 TGraphAsymmErrors* ruMakeGraphAsymErrors(std::string fname){
-  std::vector<double> x={};  
+  std::vector<double> x={};
   std::vector<double> y={};
-  std::vector<double> dxl={};  
+  std::vector<double> dxl={};
   std::vector<double> dyl={};
-  std::vector<double> dxh={};  
+  std::vector<double> dxh={};
   std::vector<double> dyh={};
 
   std::ifstream ifs(fname);
