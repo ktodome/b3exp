@@ -139,18 +139,46 @@ bool setData(std::string fname,
   }
 }
 
+/**
+* 半減期のデータを読み込むための関数2.
+*/
+bool setData(std::string fname,
+	     std::vector<double>& ez,
+	     std::vector<double>& lnL)
+{
+  ifstream ifs(fname.c_str());
+  if(ifs.is_open()) {
+    while (true) {
+      double eez,lnlam;
+      ifs >> eez >> lnlam;
+      if (ifs.eof()) break;
+      ez.push_back(eez);
+      lnL.push_back(lnlam);
+    }
+    ifs.close();
+    return true;
+  } else {
+    std::cout << fname << " was not opend!" << std::endl;
+    return false;
+  }
+}
+
 
 /**
  * 半減期のデータを読み込んでグラフを作成.
  */
-TGraph * gnMakeGraph(std::string file="group1.dat")
+TGraph * gnMakeGraph(std::string file="group1.dat", int opt=1)
 {
-  std::vector<double> t2_g1 ={};
-  std::vector<double> ez_g1 = {};
-  std::vector<double> lnL_g1 ={};
-  setData(file,t2_g1,ez_g1,lnL_g1);
+  std::vector<double> t2 ={};
+  std::vector<double> ez = {};
+  std::vector<double> lnL ={};
+  if(opt == 0){
+    setData(file,t2,ez,lnL);
+  } else if(opt == 1){
+    setData(file,ez,lnL);
+  }
   // グラフ作成、フィット
-  TGraph* gr1 = new TGraph(ez_g1.size(), &ez_g1[0], &lnL_g1[0]);
+  TGraph* gr1 = new TGraph(ez.size(), &ez[0], &lnL[0]);
   gr1->SetMarkerStyle(kFullCircle);
   return gr1;
 }
